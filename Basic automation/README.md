@@ -1,10 +1,24 @@
-# Email Automation
+# 📧 Email Automation
 
-This is a basic automation for a boutique to track the orders of the customer and send the order details via email. This will also save the details in a google spreadsheet.
+This automation helps a boutique efficiently **track customer orders** and **send order details via email**.  
+It also securely stores the order information in a **Google Spreadsheet** for easy tracking and future analysis.
 
-The workflow follows the following the steps
- - **Lankara order form** - This form allows the boutique to fill details of the customer order.
- - **Gmail Message** - Once the form is submitted a email will be sent to the boutique team informing them about the new order.
- - **Google spreadsheet** - The order details will also get stored in the google spreadsheet serving as a database for future tracking and analysis.
+---
 
- 
+## 🔄 Workflow Steps
+
+1. **📝 Lankara Order Form**  
+   The boutique fills in customer order details using this form.
+
+2. **✉️ Gmail Message**  
+   Once the form is submitted, an automated email is sent to the boutique team, notifying them about the **new order**.
+
+3. **📊 Google Spreadsheet**  
+   The order details are automatically stored in a Google Spreadsheet, serving as a **central database** for tracking and analysis.
+
+---
+
+✅ **Benefits**:
+- Saves time by eliminating manual data entry.  
+- Reduces errors in order tracking.  
+- Keeps all customer order data organized and accessible.
