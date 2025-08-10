@@ -1,0 +1,284 @@
+{
+  "name": "Sentiment Analysis",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "jithinmkp94@gmail.com",
+        "subject": "Customer Feedback/Review",
+        "emailType": "text",
+        "message": "=Customer Name : {{ $json['Customer Name'] }}\nReview : {{ $json.Review }}\nSubmitted At : {{ $json.submittedAt }}\n\nReview category : {{ $json.text }}\n\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -112,
+        48
+      ],
+      "id": "bc3704db-72ec-4632-80b6-94fe58a571fc",
+      "name": "Gmail message",
+      "webhookId": "19022cbc-806e-4fb7-b209-f933b911a2e1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wlJH1Vdy7wxzrizr",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1UlygBQdyT_lzxIyOcCeW6loaeT6IFEvQVq0hezXEAa0",
+          "mode": "list",
+          "cachedResultName": "Sentiment Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UlygBQdyT_lzxIyOcCeW6loaeT6IFEvQVq0hezXEAa0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UlygBQdyT_lzxIyOcCeW6loaeT6IFEvQVq0hezXEAa0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Customer Name": "={{ $json['Customer Name'] }}",
+            "Review": "={{ $json.Review }}",
+            "Submitted At": "={{ $json.submittedAt }}",
+            "Review category": "={{ $json.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Review",
+              "displayName": "Review",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Submitted At",
+              "displayName": "Submitted At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Review category",
+              "displayName": "Review category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -112,
+        240
+      ],
+      "id": "a1ceac9f-a11c-42c8-a4db-c6c2f7056958",
+      "name": "Add to sheet",
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "u3Lhj43asygIS3Bb",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Lankara Designs Review Form",
+        "formDescription": "This form is for the customers to share their valuable review and feedback on their experience with Lankara Designs",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Customer Name",
+              "placeholder": "name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Review",
+              "placeholder": "review",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "useWorkflowTimezone": true
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -912,
+        144
+      ],
+      "id": "f208ab2e-1c30-4cc6-b1e0-f84eaf717330",
+      "name": "Lankara Review form",
+      "webhookId": "20ba9d6a-7ea4-41d3-bcab-89c5f4539f04",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert sentiment analyser. You analyse the a customer review and output one of the below three options\n\n1. Positive\n2. Negative\n3. Neutral\n\nHere is the customer review : {{ $json.Review }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -688,
+        268
+      ],
+      "id": "bd6944e7-53c1-426c-b5e2-100c34be533f",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -616,
+        492
+      ],
+      "id": "3da9173b-982c-48e9-95bd-7ff0276d85be",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "845dlvJlgReTrFqX",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -336,
+        144
+      ],
+      "id": "e3fdb7b5-9a4d-4231-99dc-0ced14ee1bd0",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Lankara Review form": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Gmail message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Add to sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "6661bbdb-fb63-4944-8d3f-586ca61fa1d5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d65873b8b32a194db1759ec4d94841cb65c74902bba257ce3943281f22c5ed5a"
+  },
+  "id": "V5BOaXiTT0qcUPDF",
+  "tags": [
+    {
+      "createdAt": "2025-08-10T04:48:59.596Z",
+      "updatedAt": "2025-08-10T04:48:59.596Z",
+      "id": "ZSAjQw9L7RWQ2MRs",
+      "name": "Sentiment analysis"
+    }
+  ]
+}
